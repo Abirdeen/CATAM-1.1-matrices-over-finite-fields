@@ -46,3 +46,33 @@ The brute-force algorithm suggested by the problem would perform $(p-1)^2$ multi
 
 To see that this is the case, note that in the worst case, for each $a$ we need to compute the multiplication with every $b>a$ that wasn't already known to be the inverse of some other value. So for 2, we need to compute $p-4$ multiplications; for 3, we need to compute $p-6$ multiplications, and so forth, up to $\frac{p-1}{2}$, where we perform 1 multiplication. Summing, we get $(p-3)^2/4$. For the average, we expect to find the inverse about halfway through testing values.
 
+### Problem 2:
+
+Write a program to turn a matrix into reduced row echelon form using Gaussian elimination. From your output, compute the ranks of each of the following matrices, and give bases for their row spaces.
+
+$A_1 = \begin{bmatrix} 11 & 1 & 7 & 2 & 0 \\\ 8 & 0 & 2 & 5 & 11 \\\ 2 & 1 & 2 & 6 & 5 \\\ 7 & 4 & 5 & 3 & 1 \end{bmatrix} \mod 5 \text{ and} \mod 11;$  
+
+$A_2 = \begin{bmatrix} 0 & 1 & 1 & 3 & 5 & 2 \\\ 1 & 2 & 3 & 8 & 9 & 0 \\\ 0 & 1 & 1 & 2 & 3 & 2 \\\ 2 & 1 & 3 & 7 & 9 & 1 \\\ 2 & 1 & 3 & 8 & 10 & 0 \end{bmatrix} \mod 23$
+
+#### Solution:
+
+This program is implemented as `helpers.gaussianElimination`. $\text{rank}(A_1)$ is 3 when working mod 5, and 4 when working mod 11; $\text{rank}(A_2) = 5$.
+
+Considering $A_1$ mod 5, the reduced row echelon form is 
+
+$\begin{bmatrix} 1 & 0 & 0 & 4 & 0 \\\ 0 & 1 & 0 & 0 & 4 \\\ 0 & 0 & 1 & 4 & 3 \\\ 0 & 0 & 0 & 0 & 0 \end{bmatrix}$
+
+from which we can read off a rank of 3, and a row space basis of $\begin{bmatrix} 1 & 0 & 0 & 4 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 1 & 0 & 0 & 4 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 1 & 4 & 3 \end{bmatrix}$.
+
+Considering $A_1$ mod 11, the reduced row echelon form is 
+
+$\begin{bmatrix} 1 & 0 & 3 & 0 & 0 \\\ 0 & 1 & 7 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 1 \end{bmatrix}$
+
+from which we can read off a rank of 4, and a row space basis of $\begin{bmatrix} 1 & 0 & 3 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 1 & 7 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 1 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 0 & 1 \end{bmatrix}$.
+
+Considering $A_2$ mod 23, the reduced row echelon form is 
+
+$\begin{bmatrix} 1 & 0 & 1 & 0 & 0 & 0 \\\ 0 & 1 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$
+
+from which we can read off a rank of 5, and a row space basis of $\begin{bmatrix} 1 & 0 & 1 & 0 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 1 & 1 & 0 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 0 & 1 & 0 \end{bmatrix}$. $\begin{bmatrix} 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$.
+
