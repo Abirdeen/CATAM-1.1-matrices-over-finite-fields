@@ -1,11 +1,19 @@
 function inverse = findModularInverses(p)
-    % FINDMODULARINVERSES   Returns a list of inverses to integers mod p.
+    % FINDMODULARINVERSES   Find inverses to integers mod p.
     % 
+    % parameters
+    % ----------
+    % p : A prime number.
+    %
+    % returns
+    % -------
+    % inverse : an array of integers such that mod(inverse(a)*a,p) = 1.
+    %
     % examples
     % --------
-    % INVERSES = FINDMODULARINVERSES[7] returns [1 4 5 2 3 6]
+    % INVERSES = FINDMODULARINVERSES(7) returns [1 4 5 2 3 6]
     % If a number has no inverse, returns 0
-    % INVERSES = FINDMODULARINVERSES[4] returns [1 0 3]
+    % INVERSES = FINDMODULARINVERSES(4) returns [1 0 3]
     arguments
         p {mustBePositive}
     end
