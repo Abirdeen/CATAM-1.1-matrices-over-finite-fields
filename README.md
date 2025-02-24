@@ -20,6 +20,12 @@ There are multiple algorithms to find the multiplicative inverse of $a$ modulo $
 
 We find it useful to compute all inverses simultaneously. Doing this via the Extended Euclid's algorithm would have a runtime of $O(\ln 1 + \ln 2 + ... + \ln (p-1)) = O(\ln(p!))=O(p \ln p)$. A more naive algorithm - checking if $ab \equiv 1 \mod p$ for every $1 < a < b < p-1$ - has a slower runtime of $O(p^2)$, but is easier to implement. Since we work with only small values of $p$, we use the latter method, with some minor optimisations.
 
+### Reduced row echelon form
+
+Every matrix can be put in [reduced row echelon form](https://en.wikipedia.org/wiki/Row_echelon_form) by a sequence of elementary operations - swapping rows, multiplying a row by a constant, or subtracting a multiple of one row from another. The process of putting a matrix in this form is called [Gaussian elimination](https://en.wikipedia.org/wiki/Gaussian_elimination).
+
+From the reduced row echelon form, one can read off the [rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)), as well as a basis of the row space - since the elementary operations are automorpisms of the row space, a basis is just the non-zero rows, and the rank is the number of such rows.
+
 ## Problems
 
 The original CATAM project involved certain explicit questions and problems, which are reproduced (and solved) here.
