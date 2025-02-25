@@ -9,14 +9,14 @@ function U = findKernelBasis(A, p, inverse)
     %
     % returns
     % -------
-    % U : A basis of ker(A). The ith column is the ith basis element. If A is of full rank, U will be an n x 1 zero vector.
+    % U : A basis of ker(A). The ith column is the ith basis element. If A has no kernel, U will be an n x 1 zero vector.
     %
     % examples
     % --------
     % U = FINDKERNELBASIS([1 2 0 3 0;0 0 1 4 0;0 0 0 0 1; 0 0 0 0 0], 5, [1,3,2,4]) returns [3 2; 1 0; 0 1; 0 1; 0 0]
-    [m,n] = size(A);
+    [~,n] = size(A);
     [B,~,pivots,rank] = helpers.gaussianElimination(A, p, inverse);
-    if m == rank
+    if rank >= n
         U = zeros([n,1]);
         return
     end
