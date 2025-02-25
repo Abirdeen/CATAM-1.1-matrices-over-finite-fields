@@ -26,6 +26,12 @@ Every matrix can be put in [reduced row echelon form](https://en.wikipedia.org/w
 
 From the reduced row echelon form, one can read off the [rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)), as well as a basis of the row space - since the elementary operations are automorpisms of the row space, a basis is just the non-zero rows, and the rank is the number of such rows.
 
+### Kernel of a matrix
+
+The [kernel](https://en.wikipedia.org/wiki/Kernel_(linear_algebra)) of a rank $r$, $m \times n$ matrix $A = (a_{ij})$ in reduced row echelon form has a simple basis. If there are pivots in columns $j_1 < j_2 < ... < j_r$, then consider $$w_k = e_k - \sum_{1 \le j_s \le k}a_{sk}e_{j_s},$$ where $e_j$ are the standard basis of $GF(p)^n$. We claim that the $w_k, k \in [n]/\{j_1, ..., j_k\}$ form a basis of the kernel. One can immediately see they are linearly independent, since the $e_j$ are, and we can compute $$(Aw_k)_i = a_{ik} - \sum_{1\le j_s\le k} a_{sk}\delta_{i, s} = a_{ik} - a_{ik} = 0,$$ where $\delta$ is the [Kronecker delta](https://en.wikipedia.org/wiki/Kronecker_delta). So the $w_k$ are a linearly independent set of size $n-r$ in the kernel of $A$, so are a basis.
+
+When $A$ is an arbitrary matrix, that is, not in reduced row echelon form, there is some invertible matrix $R$ such that $RA$ is in reduced row echelon form. Suppose $U$ is a basis for the kernel of $RA$, derived using the above method. Then $RAU = 0$, so $AU = R^{-1}0 = 0$. So $U$ is a basis for the kernel of $A$ as well.
+
 ## Problems
 
 The original CATAM project involved certain explicit questions and problems, which are reproduced (and solved) here.
@@ -76,3 +82,33 @@ $\begin{bmatrix} 1 & 0 & 1 & 0 & 0 & 0 \\\ 0 & 1 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 0 &
 
 from which we can read off a rank of 5, and a row space basis of $\begin{bmatrix} 1 & 0 & 1 & 0 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 1 & 1 & 0 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$, $\begin{bmatrix} 0 & 0 & 0 & 0 & 1 & 0 \end{bmatrix}$. $\begin{bmatrix} 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$.
 
+### Problem 3:
+
+Write a program to compute a basis for the kernel of a matrix. Describe briefly how your algorithm works. Find bases for the kernels of the matrix $A_1$ modulo 5, modulo 7 and modulo 13. Now find bases for the kernels of the matrix $A_2$ modulo every prime below 30. Do you get the same result for every prime?
+
+#### Solution:
+
+This program is implemented as `helpers.findKernelBasis`. The theory behind the algorithm is explained in the [Kernel of a matrix](#kernel-of-a-matrix) section.
+
+Modulo 5, $\ker(A_1)$ has a basis of $\begin{bmatrix} 3 & 1 & 0 & 0 & 0 \end{bmatrix}^T$, $\begin{bmatrix} 2 & 0 & 1 & 1 & 0 \end{bmatrix}^T$.
+
+Modulo 7, $\ker(A_1)$ is spanned by $\begin{bmatrix} 5 & 1 & 6 & 0 & 1 \end{bmatrix}^T$.
+
+Modulo 13, $\ker(A_1)$ is spanned by $\begin{bmatrix} 5 & 9 & 11 & 1 & 1 \end{bmatrix}^T$.
+
+For $A_2$, we display a table of kernel bases for each prime modulus $p<30$ below:
+
+| $p$ | Kernel basis                                            |
+| -   | ------------------------------------------------------- |
+| 2   | $\begin{bmatrix} 1 & 1 & 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 3   | $\begin{bmatrix} 2 & 2 & 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 5   | $\begin{bmatrix} 4 & 4 & 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 7   | $\begin{bmatrix} 6 & 6 & 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 11  | $\begin{bmatrix} 10& 10& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 13  | $\begin{bmatrix} 12& 12& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 17  | $\begin{bmatrix} 16& 16& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 19  | $\begin{bmatrix} 18& 18& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 23  | $\begin{bmatrix} 22& 22& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+| 29  | $\begin{bmatrix} 28& 28& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
+
+Notice that every basis is equivalent in the respective $GF(p)$ to $\begin{bmatrix} -1 & -1 & 1 & 0 & 0 & 0 \end{bmatrix}^T$. This is unsurprising: if the reduced row echelon form is the same between primes, our calculation of the basis doesn't depend on the modulus. Indeed, for any field $F$ in which $A_2$ makes sense to define and has full rank (e.g. over $\mathbb{R}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{C}$, $\mathbb{Q}_p$), the kernel will have the same basis.
