@@ -1,4 +1,4 @@
-function [B, R, rank] = gaussianElimination(A, p, inverse)
+function [B, R, pivots, rank] = gaussianElimination(A, p, inverse)
     % GAUSSIANELIMINATION   Finds the echelon-reduced form of A.
     % 
     % parameters
@@ -12,24 +12,28 @@ function [B, R, rank] = gaussianElimination(A, p, inverse)
     % B : Echelon-reduced form of A.
     % R : Matrix such that B = R*A.
     % rank : The rank of A.
+    % pivots : Array of column indexes of pivots of B.
     %
     % examples
     % --------
-    % [B, R, rank] = GAUSSIANELIMINATION([1,2;1,1;1,0], 3, []) returns [1 4 5 2 3 6]
-    % If a number has no inverse, returns 0
-    % INVERSES = FINDMODULARINVERSES(4) returns [1 0 3]
-    [n,m] = size(A);
+    % [B, R, pivots, rank] = HELPERS.GAUSSIANELIMINATION([1,2;1,1;1,0], 3, [1,2]) returns
+    % B = 1 0       R = 2 2 0       pivots = 1      rank = 2
+    %     0 1           1 2 0                2
+    %     0 0           1 1 1
+    %
+    [m,n] = size(A);
     B = mod(A,p);
-    R = eye(n);
+    R = eye(m);
     row_transps = 0;
-    for i = 1:m
+    pivots = zeros(m);
+    for j = 1:n
         nonzero_index = 0;
         % Search for a non-zero index in column i
-        for j = row_transps+1:n
-            if B(j,i) == 0
+        for i = row_transps+1:m
+            if B(i,j) == 0
                 continue
             end
-            nonzero_index = j;
+            nonzero_index = i;
             break
         end
         % If no non-zero index is found, move on to next column
@@ -39,43 +43,46 @@ function [B, R, rank] = gaussianElimination(A, p, inverse)
         % Move the non-zero row up
         % Normalise the row (so the first non-zero index is 1)
         row_transps = row_transps + 1;
-        Q = T(n,row_transps,nonzero_index);
-        Q = D(n,row_transps,B(nonzero_index,i), inverse)*Q;
+        Q = T(m,row_transps,nonzero_index);
+        Q = D(m,row_transps,B(nonzero_index,j), inverse)*Q;
         B = mod(Q*B,p);
         R = mod(Q*R,p);
+        % Add column to pivots
+        pivots(row_transps) = j;
         % Eliminate the column from other rows
-        for j = 1:n 
-            if j == row_transps || B(j,i) == 0
+        for i = 1:m 
+            if i == row_transps || B(i,j) == 0
                 continue
             end
-            Q = S(n, row_transps, B(j,i), j);
+            Q = S(m, row_transps, B(i,j), i);
             B = mod(Q*B, p);
             R = mod(Q*R, p);
         end
     end
     rank = row_transps;
+    pivots = nonzeros(pivots);
 end
 
-function R = T(n,i,j)
-    R = eye(n);
-    if i>n || j>n
+function R = T(m,j,k)
+    R = eye(m);
+    if j>m || k>m
         return 
     end
-    [R(i,i),R(j,j), R(i,j),R(j,i)] = deal(0,0,1,1);
+    [R(j,j),R(k,k), R(j,k),R(k,j)] = deal(0,0,1,1);
 end
 
-function R = D(n, i, a, inverse)
-    R = eye(n);
-    if i>n
+function R = D(m, j, a, inverse)
+    R = eye(m);
+    if j>m
         return
     end
-    R(i,i) = inverse(a);
+    R(j,j) = inverse(a);
 end
 
-function R = S(n, i, a, j)
-    R = eye(n);
-    if i>n || j>n
+function R = S(m, j, a, k)
+    R = eye(m);
+    if j>m || k>m
         return
     end
-    R(j,i) = -a;
+    R(k,j) = -a;
 end
