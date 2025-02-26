@@ -5,7 +5,7 @@ function U = findKernelBasis(A, p, inverse)
     % ----------
     % A : Any matrix.
     % p : Prime modulus.
-    % inverse : array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
+    % inverse : Array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
     %
     % returns
     % -------

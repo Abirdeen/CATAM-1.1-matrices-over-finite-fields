@@ -5,7 +5,7 @@ function [U,W,U_plus_W,U_cap_W] = secondIsomorphismTheoremBases(A, B, p, inverse
     % ----------
     % A, B : Matrices with row spaces U and W respectively.
     % p : Prime modulus.
-    % inverse : array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
+    % inverse : Array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
     %
     % returns
     % -------

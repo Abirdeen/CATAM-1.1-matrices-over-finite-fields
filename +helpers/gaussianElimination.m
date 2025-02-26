@@ -5,7 +5,7 @@ function [B, R, pivots, rank] = gaussianElimination(A, p, inverse)
     % ----------
     % A : Matrix to reduce.
     % p : Prime modulus.
-    % inverse : array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
+    % inverse : Array of multiplicative inverses mod p, e.g. from FINDMODULARINVERSES.
     %
     % returns
     % -------
