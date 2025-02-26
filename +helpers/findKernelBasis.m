@@ -14,6 +14,11 @@ function U = findKernelBasis(A, p, inverse)
     % examples
     % --------
     % U = FINDKERNELBASIS([1 2 0 3 0;0 0 1 4 0;0 0 0 0 1; 0 0 0 0 0], 5, [1,3,2,4]) returns [3 2; 1 0; 0 1; 0 1; 0 0]
+    arguments
+        A {mustBeMatrix}
+        p {mustBePositive}
+        inverse {mustBeRow}
+    end
     [~,n] = size(A);
     [B,~,pivots,rank] = helpers.gaussianElimination(A, p, inverse);
     if rank >= n

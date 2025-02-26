@@ -20,7 +20,11 @@ function [B, R, pivots, rank] = gaussianElimination(A, p, inverse)
     % B = 1 0       R = 2 2 0       pivots = 1      rank = 2
     %     0 1           1 2 0                2
     %     0 0           1 1 1
-    %
+    arguments
+        A {mustBeMatrix}
+        p {mustBePositive}
+        inverse {mustBeRow}
+    end
     [m,n] = size(A);
     B = mod(A,p);
     R = eye(m);
