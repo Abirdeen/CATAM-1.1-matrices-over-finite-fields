@@ -1,6 +1,6 @@
-# CATAM-1.1-matrices-over-finite-fields
+# CATAM 1.1: Matrices Over Finite Fields
 
-A rewrite of my Cambridge CATAM undergraduate project, "Matrices over finite fields".
+A rewrite of my Cambridge CATAM undergraduate project, "Matrices Over Finite Fields".
 
 ## MATLAB
 
