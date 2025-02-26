@@ -26,6 +26,14 @@ Every matrix can be put in [reduced row echelon form](https://en.wikipedia.org/w
 
 From the reduced row echelon form, one can read off the [rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)), as well as a basis of the row space - since the elementary operations are automorpisms of the row space, a basis is just the non-zero rows, and the rank is the number of such rows.
 
+### Moore-Penrose Pseudo-inverse
+
+When a full rank matrix $A$ is square, it has a two-sided inverse, that is, a matrix $B$ such that $AB=BA=I$. This is not the case for non-square matrices, which in fact never have a two-sided inverse. Still, one can generally find the [Moore-Penrose Pseudo-inverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse). This is a matrix $A^+$ which acts as a weak inverse for $A$: $$AA^+A = A,$$ $$A^+AA^+ = A^+.$$
+
+When working in the real or complex numbers, any $A$ of full rank has $A^+=A^\dagger(AA^{\dagger})^{-1}$, where $A^{\dagger}$ is the [Hermitian transpose](https://en.wikipedia.org/wiki/Conjugate_transpose). However, when working modulo p, it might not always be the case that $AA^T$ is invertible, even when $A$ is of full rank. For example, when $$A = \begin{bmatrix} 0 & 1 & 1 \\\ 2 & 2 & 0 \end{bmatrix} \mod 3,$$ $A$ clearly has full rank, but $$AA^T = \begin{bmatrix} 2 & 2 \\\ 2 & 2 \end{bmatrix}$$, which is not invertible.
+
+In `helpers.MoorePenroseInverse`, we compute the inverse of a matrix mod p if it exists, else the Moore-Penrose Pseudo-inverse if it exists and can be computed with the above method.
+
 ### Kernel of a matrix
 
 The [kernel](https://en.wikipedia.org/wiki/Kernel_(linear_algebra)) of a rank $r$, $m \times n$ matrix $A = (a_{ij})$ in reduced row echelon form has a simple basis. If there are pivots in columns $j_1 < j_2 < ... < j_r$, then consider $$w_k = e_k - \sum_{1 \le j_s \le k}a_{sk}e_{j_s},$$ where $e_j$ are the standard basis of $GF(p)^n$. We claim that the $w_k, k \in [n]/\{j_1, ..., j_k\}$ form a basis of the kernel. One can immediately see they are linearly independent, since the $e_j$ are, and we can compute $$(Aw_k)_i = a_{ik} - \sum_{1\le j_s\le k} a_{sk}\delta_{i, s} = a_{ik} - a_{ik} = 0,$$ where $\delta$ is the [Kronecker delta](https://en.wikipedia.org/wiki/Kronecker_delta). So the $w_k$ are a linearly independent set of size $n-r$ in the kernel of $A$, so are a basis.
