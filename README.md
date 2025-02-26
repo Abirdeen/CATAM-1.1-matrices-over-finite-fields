@@ -30,7 +30,21 @@ From the reduced row echelon form, one can read off the [rank](https://en.wikipe
 
 The [kernel](https://en.wikipedia.org/wiki/Kernel_(linear_algebra)) of a rank $r$, $m \times n$ matrix $A = (a_{ij})$ in reduced row echelon form has a simple basis. If there are pivots in columns $j_1 < j_2 < ... < j_r$, then consider $$w_k = e_k - \sum_{1 \le j_s \le k}a_{sk}e_{j_s},$$ where $e_j$ are the standard basis of $GF(p)^n$. We claim that the $w_k, k \in [n]/\{j_1, ..., j_k\}$ form a basis of the kernel. One can immediately see they are linearly independent, since the $e_j$ are, and we can compute $$(Aw_k)_i = a_{ik} - \sum_{1\le j_s\le k} a_{sk}\delta_{i, s} = a_{ik} - a_{ik} = 0,$$ where $\delta$ is the [Kronecker delta](https://en.wikipedia.org/wiki/Kronecker_delta). So the $w_k$ are a linearly independent set of size $n-r$ in the kernel of $A$, so are a basis.
 
-When $A$ is an arbitrary matrix, that is, not in reduced row echelon form, there is some invertible matrix $R$ such that $RA$ is in reduced row echelon form. Suppose $U$ is a basis for the kernel of $RA$, derived using the above method. Then $RAU = 0$, so $AU = R^{-1}0 = 0$. So $U$ is a basis for the kernel of $A$ as well.
+When $A$ is an arbitrary matrix, that is, not in reduced row echelon form, there is some invertible matrix $R$ such that $RA$ is in reduced row echelon form. Suppose $U$ is a basis for the kernel of $RA$, derived using the above method. Then $RAU = \underline{0}$, so $AU = R^{-1}\underline{0} = \underline{0}$. So $U$ is a basis for the kernel of $A$ as well.
+
+### Annihilators
+
+Given a set $S\subseteq V$ of vectors, the [annihilator](https://en.wikipedia.org/wiki/Annihilator_(linear_algebra)) of $S$, written $S^{\circ}$, is the set of $f\in V^*$ such that $f(S) = \underline{0}$, where $V^*$ is the [dual space](https://en.wikipedia.org/wiki/Dual_space). If $U = \langle S\rangle$ is the [span](https://en.wikipedia.org/wiki/Linear_span) of $S$, then $U^{\circ} = S^{\circ}$, so we can always assume $S$ is a linear subspace. $S^{\circ}$ will always be a linear subspace. Moreover, $\dim U + \dim U^{\circ} = \dim V$.
+
+In the special case that $V = F^n$, $V\cong V^*$, so both $U$ and $U^*$ can be viewed as subspaces of $V$. When $U$ is the rowspace of a matrix $A$, $U^{\circ}$ is the kernel. $U^{\circ\circ} = U$.
+
+When $U$, $W$ are linear subspaces of $V$, we can form the subspaces $U\cap W$ and $U+W = \{u+w|u\in U, w\in W\}$. We have that $(U\cap W)^{\circ} = U^{\circ}+W^{\circ}$ and $(U+W)^{\circ} = U^{\circ}\cap W^{\circ}$.
+
+### The isomorphism theorems for vector spaces
+
+The [first isomorphism theorem](https://en.wikipedia.org/wiki/Isomorphism_theorems#Theorem_A_(modules)) states that, for $f:V\rightarrow W$ a linear map, $\text{Im}f \cong \frac{V}{\ker f}$, from which we can deduce that $\dim V = \dim(\text{Im}f) + \dim(\ker f)$.
+
+The [second isomorphism theorem](https://en.wikipedia.org/wiki/Isomorphism_theorems#Theorem_B_(modules)) states that, for $U$ and $W$ subspaces of $V$, $\frac{U+W}{W} \cong \frac{U}{U\cap W}$, from which we can deduce that $\dim(U+W) = \dim U + \dim W - \dim(U\cap W)$.
 
 ## Problems
 
@@ -112,3 +126,35 @@ For $A_2$, we display a table of kernel bases for each prime modulus $p<30$ belo
 | 29  | $\begin{bmatrix} 28& 28& 1 & 0 & 0 & 0 \end{bmatrix}^T$ |
 
 Notice that every basis is equivalent in the respective $GF(p)$ to $\begin{bmatrix} -1 & -1 & 1 & 0 & 0 & 0 \end{bmatrix}^T$. This is unsurprising: if the reduced row echelon form is the same between primes, our calculation of the basis doesn't depend on the modulus. Indeed, for any field $F$ in which $A_2$ makes sense to define and has full rank (e.g. over $\mathbb{R}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{C}$, $\mathbb{Q}_p$), the kernel will have the same basis.
+
+### Problem 4:
+
+Use your program from Problem 3 to find $U^{\circ}$, where we work modulo 23 and $U$ is the row space of the matrix $A_1$. Similarly find $(U^{\circ})^{\circ}$ and verify that it is equal to $U$.
+
+#### Solution:
+
+We can compute $U^{\circ} = \ker(A_1) = \langle \begin{bmatrix} 15 & 9 & 16 & 18 & 1 \end{bmatrix}^T \rangle$, while $$U^{\circ\circ} = \langle \begin{bmatrix} 4 & 1 & 0 & 0 & 0 \end{bmatrix}, \begin{bmatrix} 2 & 0 & 1 & 0 & 0 \end{bmatrix}, \begin{bmatrix} 8 & 0 & 0 & 1 & 0 \end{bmatrix}, \begin{bmatrix} 3 & 0 & 0 & 0 & 1 \end{bmatrix} \rangle.$$ To verify that it is equal to $U$, it sufficies to express the rows of $A_1$ as sums of the basis vectors of $U^{\circ\circ}$, since $A_1$ has rank 4. Writing $e_1, e_2, e_3, e_4$ for the basis vectors in the order listed, one can check that $$A_1 = \begin{bmatrix} e_1+7e_2+2e_3 \\\ 2e_2+5e_3+11e_4 \\\ e_1+2e_2+6e_3+5e_4 \\\ 4e_1+5e_2+3e_3+e_4 \end{bmatrix} \mod 23.$$
+
+### Problem 5:
+
+Write a program that, given matrices $A$ and $B$ with row spaces $U$ and $W$, computes bases for $U$, $W$, $U + W$ and $U \cap W$. Explain briefly how your program works. Comment on the relationship between the dimensions of the four spaces computed. Run your program on the following examples:
+- Modulo 19 with $U$ the row space of
+    $$A_3 = \begin{bmatrix} 1 & 0 & 0 & 0 & 3 & 0 & 0 \\\ 
+                            0 & 5 & 0 & 1 & 6 & 3 & 0 \\\
+                            0 & 0 & 5 & 0 & 2 & 0 & 0 \\\
+                            2 & 4 & 0 & 0 & 0 & 5 & 1 \\\
+                            4 & 3 & 0 & 0 & 6 & 2 & 6 \end{bmatrix} $$
+    and $W$ the kernel of $A_3$.
+
+- Again take $U$ the row space of $A_3$ and $W$ the kernel of $A_3$, but this time modulo 7.
+
+#### Solution:
+
+Bases for $U$ and $W$ are given by the non-zero rows of the reduced row echelon forms of $A$ and $B$ respectively. A base for $U+W$ is derived the same way from $\begin{bmatrix} A \\\ B \end{bmatrix}$. Finally, since $U \cap W = (U\cap W)^{\circ\circ} = (U^{\circ}+W^{\circ})^{\circ}$, we can use `helpers.findKernelBasis` three times (on $A$, $B$, and $\begin{bmatrix} \ker(A)^T \\\ \ker(B)^T \end{bmatrix}$) to obtain a basis for $U \cap W$. This algorithm is implemented in `helpers.secondIsomorphismTheoremBases`.
+
+For the given moduli and linear subspaces $U$, $W$, we obtain the following results:
+
+| $p$ | Basis of $U$          | Basis of $W$   | Basis of $U + W$ | Basis of $U \cap W$ |
+| --- | --------------------- | -------------- | ---------------- | ------------------- |
+| 19  | $\begin{bmatrix} 1 & 0 & 0 & 0 & 0 \\\ 0 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 1 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 1 \\\ 6 & 3 & 16 & 0 & 17 \\\ 1 & 14 & 9 & 8 & 6 \end{bmatrix}$ | $\begin{bmatrix} 1 & 0 \\\ 0 & 1 \\\ 9 & 0 \\\ 18 & 2 \\\ 6 & 0 \\\ 1 & 4 \\\ 12 & 14 \end{bmatrix}$ | $\begin{bmatrix} 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\ 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\ 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$ | $\begin{bmatrix} 0 \\\ 0 \\\ 0 \\\ 0 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix}$ |
+| 7   | $\begin{bmatrix} 1 & 0 & 0 & 0 & 0 \\\ 0 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 1 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 1 \\\ 0 & 3 & 0 & 2 & 0 \\\ 0 & 2 & 0 & 4 & 0 \end{bmatrix}$ | $\begin{bmatrix} 0 & 0 \\\ 1 & 0 \\\ 0 & 0 \\\ 0 & 1 \\\ 0 & 0 \\\ 3 & 2 \\\ 2 & 4 \end{bmatrix}$ | $\begin{bmatrix} 1 & 0 & 0 & 0 & 0 \\\ 0 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 1 & 0 & 0 \\\ 0 & 0 & 0 & 1 & 0 \\\ 0 & 0 & 0 & 0 & 1 \\\ 0 & 3 & 0 & 2 & 0 \\\ 0 & 2 & 0 & 4 & 0 \end{bmatrix}$ | $\begin{bmatrix} 0 & 0 \\\ 4 & 5 \\\ 0 & 0 \\\ 5 & 3 \\\ 0 & 0 \\\ 1 &0 \\\ 0 & 1 \end{bmatrix}$ |
